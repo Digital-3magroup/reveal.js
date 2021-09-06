@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for HTML5 for Linux version 5.6.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content=
+  "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Git et compagnie</title>
+  <link defer rel="stylesheet" href="dist/reset.css">
+  <link defer rel="stylesheet" href="dist/reveal.css">
+  <link defer rel="stylesheet" href="dist/theme/solarized.css">
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section data-transition='fade'
+               data-autoslide='1000'>
+        <div>
+          <span class='fragment fade-in'>Une introduction à</span>
+          <p>
+            <img
+                 src='https://git-scm.com/images/logos/downloads/Git-Logo-2Color.png'
+                 width='25%'
+                 >
+          </p>
+          <small class='fragment' data-autoslide='0'>par Mickaël Wolff</small>
+        </div>
+      </section>
+
+      <section data-transition='fade' class='toc'>
+        <ol>
+        </ol>
+      </section>
+
+      <section data-transition='convex'>
+
+        <h2>Créer un dépôt</h2>
+
+        <section data-transition='concave'>
+          <pre><code data-trim="" data-noescape="" data-line-numbers='1|2|3|4'>
+            $ mkdir precious; cd $_
+            $ git init
+            $ echo '&lt;?php phpinfo();' &gt; index.php
+            $ git status
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in'><code data-trim='' data-noescape=''>
+          On branch trunk
+
+          No commits yet
+
+          Untracked files:
+            (use "git add <file>..." to include in what will be committed)
+            index.php
+
+          nothing added to commit but untracked files present (use "git add" to track)
+          </code></pre>
+        </section>
+
+        <section data-transition="concave">
+          <pre><code data-trim="" data-noescape="">
+            $ git add -N index.php
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in'><code data-trim='' data-noescape=''>
+          On branch trunk
+
+          No commits yet
+
+          Changes not staged for commit:
+            (use "git add <file>..." to update what will be committed)
+            (use "git restore <file>..." to discard changes in working directory)
+            new file:   index.php
+
+          no changes added to commit (use "git add" and/or "git commit -a")
+          </code></pre>
+        </section>
+
+        <section data-transition="concave">
+          <pre><code data-trim="" data-noescape="">
+            $ git diff
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in'><code data-trim='' data-noescape=''>
+            $ git add -p index.php
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in'><code data-trim='' data-noescape=''>
+            On branch trunk
+
+            No commits yet
+
+            Changes to be committed:
+              (use "git rm --cached <file>..." to unstage)
+              new file:   index.php
+          </code></pre>
+        </section>
+
+        <section data-transition="concave">
+          <pre><code data-trim="" data-noescape="">
+            $ git diff --cached
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in'><code data-trim='' data-noescape=''>
+            diff --git a/index.php b/index.php
+            new file mode 100644
+            index 0000000..c4837a3
+            --- /dev/null
+            +++ b/index.php
+            @@ -0,0 +1 @@
+            +&lt;?php phpinfo();
+          </code></pre>
+        </section>
+
+        <section data-transition="concave">
+          <pre><code data-trim="" data-noescape="">
+            git commit -m 'PHP Infos'
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in'><code data-trim='' data-noescape=''>
+            [trunk (root-commit) 68a502e] PHP Infos
+             1 file changed, 1 insertion(+)
+             create mode 100644 index.php
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in'><code data-trim='' data-noescape=''>
+            $ git status
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in'><code data-trim='' data-noescape=''>
+            On branch trunk
+            nothing to commit, working tree clean
+          </code></pre>
+        </section>
+
+        <section data-transition="fade">
+          <h3>Aller plus loin</h3>
+          <dl>
+            <dt>.gitignore</dt><dd>ou comment ne pas pouser .DS_Store</dd>
+            <dt>.git/config</dt><dd>ou comment configurer son dépôt local</dd>
+            <dt>git remote</dt><dd>ou comment publier</dd>
+            <dt>git hooks</dt><dd>ou comment automatiquement contrôler son code</dd>
+          </dl>
+        </section>
+
+      </section>
+
+      <section data-transition='convex'>
+        <h2>Workflow</h2>
+
+        <section data-transition='concave'>
+          <h3>Trunk based</h3>
+          <h3>Feature branches</h3>
+        </section>
+
+        <section data-transition='concave'>
+          <h3>Trunk based</h3>
+
+          <p>au plus proche du tronc</p>
+          <p>des branches courtes</p>
+          <p>on pousse quotidiennement</p>
+        </section>
+
+        <section data-transition='concave'>
+          <h3>Feature branches</h3>
+
+          <pre><code data-trim="" data-noescape="">
+            $ git checkout -b feat/show-time
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in-then-out'><code data-trim='' data-noescape=''>
+            $ vim model/time.php
+            $ git add -N .; git add -p
+            $ git commit -m 'Fonction qui cherche et formate le temps'
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in-then-out'><code data-trim='' data-noescape=''>
+            $ vim time.html.php
+            $ git add -N .; git add -p
+            $ git commit -m "Composant d'affichage du temps"
+          </code></pre>
+        </section>
+
+        <section data-transition='concave'>
+          <h3>Feature branches</h3>
+
+          <pre><code data-trim='' data-noescape=''>
+            $ vim time.html.php time.css
+            $ git add -N .; git add -p
+            $ git commit -m 'Mise en page CSS'
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in-then-out'><code data-trim='' data-noescape=''>
+            $ vim index.html.php
+            $ git add -N .; git add -p
+            $ git commit -m 'Intégration du temps dans la page principale'
+          </code></pre>
+
+          <pre class='fragment' data-transition='fade-in-then-out'><code data-trim='' data-noescape=''>
+          git push -u origin feat/show-time
+          </code></pre>
+
+        </section>
+
+        <section data-transition='concave'>
+          <h3>Pull request</h3>
+
+          <p>fonctionnalité indépendante de Git</p>
+          <p>pas obligatoire mais souhaitable</p>
+
+        </section>
+
+        <section data-transition="fade">
+          <h3>Aller plus loin</h3>
+          <dl>
+            <dt>git tag</dt><dd>ou comment marquer un commit</dd>
+            <dt>git merge</dt><dd>ou comment fuuuuuuusion&nbsp;!</dd>
+          </dl>
+        </section>
+
+      </section>
+
+      <section data-transition='convex'>
+        <h2>Tricher</h2>
+
+        <section data-transition='concave'>
+          <h3>Feature branches</h3>
+
+          <pre><code data-trim="" data-noescape="">
+            $ git rebase
+            $ git cherry-pick
+            $ git commit --fixup
+            $ git tag
+          </code></pre>
+        </section>
+
+        <section data-transition="fade">
+          <h3>Aller plus loin</h3>
+          <dl>
+            <dt>git revert</dt><dd>ou comment annuler un commit</dd>
+            <dt>git blame</dt><dd>ou comment trouver qui est le c… oh, c'est moi&nbsp;!</dd>
+            <dt>git rebase -i --autosquash</dt><dd>ou comment faire sa part</dd>
+          </dl>
+        </section>
+
+      </section>
+
+      <section data-transition='convex'>
+        <h2>Trouver de l'aide</h2>
+
+        <section data-transition='concave'>
+          <h3>Documentation</h3>
+        </section>
+
+        <section data-transition='concave'>
+          <h3>Des questions&nbsp;?</h3>
+        </section>
+
+      </section>
+
+    </div>
+  </div>
+  <script defer src="dist/reveal.js"></script>
+  <script defer src="plugin/notes/notes.js"></script>
+  <script defer src="plugin/markdown/markdown.js"></script>
+  <script defer src="plugin/highlight/highlight.js"></script>
+  <script defer src="js/git-demo.js"></script>
+</body>
+</html>
